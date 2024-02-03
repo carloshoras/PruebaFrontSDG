@@ -4,58 +4,57 @@ const continentsList = ["General", "Africa", "Antarctica", "Asia", "Europe", "No
 function filterDataCharts ({dataX, dataY}, inputValue) {
     let filteredDataX = []
     let filteredDataY = dataY.filter((population, index) => {
-      if(population/1e6 >= inputValue) {
-        filteredDataX.push(dataX[index])
-        return true
-      } else {
-        return false
-      }
+        if(population/1e6 >= inputValue) {
+            filteredDataX.push(dataX[index])
+            return true
+        } else {
+            return false
+        }
     })
     return {dataX: filteredDataX, dataY: filteredDataY}
-  }
+}
 
-  function dataCharts (dataCountries) {
+function dataCharts (dataCountries) {
     let dataX = []
     let dataY = []
     for (let country of dataCountries) {
-      dataX.push(country.name)
-      dataY.push(country.population)
+        dataX.push(country.name)
+        dataY.push(country.population)
     }
     return {dataX, dataY}
-  }
+}
   
-  function sortDataByAlphabet (data) {
+function sortDataByAlphabet (data) {
     return data.sort((a,b) => a.name.localeCompare(b.name))
-  }
+}
   
-  async function fetchDataCountries(continentName) {
-    console.log("Estoy en inicio de fetchDataCountries")
+async function fetchDataCountries(continentName) {
     try {
-      const response = await fetch("https://restcountries.com/v3.1/all")
-      const countries = await response.json()
-      if (continentName==="General") {
-        let generalContinents = {}
-        continentsList.slice(1).map(continent => generalContinents[continent] = 0)
-        countries.forEach(country => {
-          country.continents.forEach(continent => {
-            generalContinents[continent] += country.population
-          })
-        })
-        let sendingDataContinents = []
-        for (let generalContinent in generalContinents) {
-          sendingDataContinents.push({name: generalContinent, population: generalContinents[generalContinent]})
+        const response = await fetch("https://restcountries.com/v3.1/all")
+        const countries = await response.json()
+        if (continentName==="General") {
+            let generalContinents = {}
+            continentsList.slice(1).map(continent => generalContinents[continent] = 0)
+            countries.forEach(country => {
+                country.continents.forEach(continent => {
+                    generalContinents[continent] += country.population
+                })
+            })
+            let sendingDataContinents = []
+            for (let generalContinent in generalContinents) {
+                sendingDataContinents.push({name: generalContinent, population: generalContinents[generalContinent]})
+            }
+            return sortDataByAlphabet(sendingDataContinents)
         }
-        return sortDataByAlphabet(sendingDataContinents)
-      }
-      let countriesContinent = countries.
-      filter((country) => {
-        return (country.continents.includes(continentName))
-      })
-      .map(country => { return {name: country.name.common, population: country.population}})
-      console.log("Estoy al final de fetchDataCountries")
-      return sortDataByAlphabet(countriesContinent)
+        let countriesContinent = countries.
+        filter((country) => {
+            return (country.continents.includes(continentName))
+        })
+        .map(country => { return {name: country.name.common, population: country.population}})
+        return sortDataByAlphabet(countriesContinent)
     } catch(err) {
-      console.log(err)
+        console.log(err)
     }
-  }
+}
+
 export {filterDataCharts, dataCharts, fetchDataCountries, continentsList, continentsListURL}

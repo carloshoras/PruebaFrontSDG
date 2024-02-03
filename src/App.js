@@ -23,13 +23,7 @@ function Header() {
     <header>
       <nav>
           <Link id="main" to="/" ><p>General View</p></Link>
-          <Link to="/africa" ><p>Africa</p></Link>
-          <Link to="/antarctica" ><p>Antarctica</p></Link>
-          <Link to="/asia" ><p>Asia</p></Link>
-          <Link to="/europe" ><p>Europe</p></Link>
-          <Link to="/northamerica" ><p>North America</p></Link>
-          <Link to="/oceania" ><p>Oceania</p></Link>
-          <Link to="/southamerica" ><p>South America</p></Link>
+          {continentsListURL.slice(1).map((continenLowerCase, index) => <Link to={`/${continenLowerCase}`} ><p>{continentsList[index+1]}</p></Link>)}
       </nav>
     </header>
   )
@@ -100,7 +94,7 @@ function Main() {
         <h1>World Population Data</h1>
       </div>
       <div id="filter">
-        <label htmlFor="filter"><span>➔</span> Filter by continents with a population bigger than: </label>
+        <label htmlFor="filter"><span>➔</span> Filter by continents/countries with a population bigger than: </label>
         <input id="filter" type="number" value = {inputValue} onChange={(event) => {handleChangeInput(event.target.value)}}/>
         <p>(millions)</p>
         <button onClick={handleButtonClick}>Apply</button>
