@@ -51,31 +51,34 @@ nav a {
 }
 
 
-div#filter {
+div#filterDiv {
   display: flex;
   align-items: center;
   overflow: auto;
   margin-bottom: 10px;
 }
 
-input#filter {
+input.filter {
   width: 50px;
-  margin-right: 10px;
+  margin-right: 5px;
   margin-left: 5px;
 }
 
-#filter button {
+#filterDiv button {
   background-color: rgb(102, 146, 207);
   color: white;
   height: 35px;
   width: 70px;
   border-radius: 40px;
+  margin-left: 28px;
 }
 
-#filter button:hover {
+#filterDiv button:hover {
   cursor:pointer;
 }
 
-#filter button {
-  margin-left: 30px;
+#filterDiv p {
+  font-size: 12px;
+  padding-top: 4px;
+
 }
