@@ -4,6 +4,10 @@
   font-family: Roboto;
 }
 
+span {
+  font-size: 18px;
+}
+
 #main {
   font-weight: 700;
   text-decoration:underline;
@@ -37,7 +41,7 @@ nav {
   align-items: center;
   flex-wrap: wrap;
   gap: 30px;
-  background-color: rgb(214, 214, 246);
+  background-color: #bbdaf6;
   border-bottom: 3px solid black;
 }
 
@@ -51,6 +55,7 @@ div#filter {
   display: flex;
   align-items: center;
   overflow: auto;
+  margin-bottom: 10px;
 }
 
 input#filter {

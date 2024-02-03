@@ -7,13 +7,10 @@ import {Routes, Route} from 'react-router-dom';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-console.log('Estoy ejecutando App.js')
-
 const continentsListURL = ["general", "africa", "antarctica", "asia", "europe", "northamerica", "oceania", "southamerica"]
 const continentsList = ["General", "Africa", "Antarctica", "Asia", "Europe", "North America","Oceania", "South America"]
 
 function filterDataCharts ({dataX, dataY}, inputValue) {
-  console.log("Estoy filtrando datitos")
   let filteredDataX = []
   let filteredDataY = dataY.filter((population, index) => {
     if(population/1e6 >= inputValue) {
@@ -23,14 +20,10 @@ function filterDataCharts ({dataX, dataY}, inputValue) {
       return false
     }
   })
-  console.log("Data filtered x", filteredDataX)
-  console.log("Data filtered y", filteredDataY)
   return {dataX: filteredDataX, dataY: filteredDataY}
-
 }
 
 function dataCharts (dataCountries) {
-  console.log("Estoy en dataCharts")
   let dataX = []
   let dataY = []
   for (let country of dataCountries) {
@@ -43,42 +36,37 @@ function dataCharts (dataCountries) {
 function sortDataByAlphabet (data) {
   return data.sort((a,b) => a.name.localeCompare(b.name))
 }
-//falta hacer para continentes
-  async function fetchDataCountries(continentName) {
-    console.log("Estoy en inicio de fetchDataCountries")
-    try {
-        const response = await fetch("https://restcountries.com/v3.1/all")
-        const countries = await response.json()
-        if (continentName==="General") {
-          let generalContinents = {}
-          continentsList.slice(1).map(continent => generalContinents[continent] = 0)
-          countries.forEach(country => {
-            country.continents.forEach(continent => {
-              generalContinents[continent] += country.population
-            })
-          })
-          let sendingDataContinents = []
-          //quitar el general
-          for (let generalContinent in generalContinents) {
-            sendingDataContinents.push({name: generalContinent, population: generalContinents[generalContinent]})
-          }
-          return sortDataByAlphabet(sendingDataContinents)
-        }
-        let countriesContinent = countries.
-        filter((country) => {
-          return (country.continents.includes(continentName))
+
+async function fetchDataCountries(continentName) {
+  console.log("Estoy en inicio de fetchDataCountries")
+  try {
+    const response = await fetch("https://restcountries.com/v3.1/all")
+    const countries = await response.json()
+    if (continentName==="General") {
+      let generalContinents = {}
+      continentsList.slice(1).map(continent => generalContinents[continent] = 0)
+      countries.forEach(country => {
+        country.continents.forEach(continent => {
+          generalContinents[continent] += country.population
         })
-        .map(country => { return {name: country.name.common, population: country.population}})
-        console.log("Estoy al final de fetchDataCountries")
-        return sortDataByAlphabet(countriesContinent)
-      } catch(err) {
-        console.log(err)
+      })
+      let sendingDataContinents = []
+      for (let generalContinent in generalContinents) {
+        sendingDataContinents.push({name: generalContinent, population: generalContinents[generalContinent]})
       }
+      return sortDataByAlphabet(sendingDataContinents)
     }
-
-
-  
-
+    let countriesContinent = countries.
+    filter((country) => {
+      return (country.continents.includes(continentName))
+    })
+    .map(country => { return {name: country.name.common, population: country.population}})
+    console.log("Estoy al final de fetchDataCountries")
+    return sortDataByAlphabet(countriesContinent)
+  } catch(err) {
+    console.log(err)
+  }
+}
 
 export default function App() {
   console.log("Estoy en App")
@@ -114,9 +102,7 @@ function Header({onClick}) {
 }
 
 function Main() {
-  console.log("Estoy en el Main")
   const continent = useParams().continent || "general"
-  console.log("yo" + continent + "yo")
   const continentName = continentsList[continentsListURL.indexOf(continent)]
 
   const [buttonClick, setButtonClick] = useState(false)
@@ -137,23 +123,16 @@ function Main() {
     async function loadData() {
       setInputValue(0)
       //comprobar inputvalue sea numero positivo
-      console.log("Voy a hacer el fetch")
       const dataCountries = await fetchDataCountries(continentName)
       console.log(dataCountries)
-      console.log("Voy a sacar data para los charts")
       setUnfilteredChartData(dataCharts(dataCountries, inputValue))
-
     }
-    console.log("Estoy primer UseEffect")
     loadData()
   },[continent])
   
   useEffect(function prueba() {
-
-      console.log("Procedo a filtrar datos")
       console.log(unfilteredChartData)
       setChartData(filterDataCharts(unfilteredChartData, inputValue))
-
   },[buttonClick,unfilteredChartData])
 
   const options = {
