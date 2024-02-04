@@ -1,9 +1,9 @@
 # About this project
---This project displays the population of every continent and the countries in it
---The charts are displayed with a logarithmic scale so differences between countries are not as visual as in a regular scaled chart.
---Type 'npm install' to install the required dependencies and then 'npm start' to run the project
+This project displays the population of every continent and the countries in it. \
+--The charts are displayed with a logarithmic scale so differences between countries are not as visual as in a regular scaled chart.\
+--Type 'npm install' to install the required dependencies and then 'npm start' to run the project.\
 --You can access the different countries by clicking on the nav menu or typing it in the url with any of the following elements:
-["africa", "antarctica", "asia", "europe", "northamerica", "oceania", "southamerica"] (ex. 'http://localhost:3000/northamerica')
+["africa", "antarctica", "asia", "europe", "northamerica", "oceania", "southamerica"] (ex. 'http://localhost:3000/northamerica')\
 --You can use a filter to type a number (units in millions) and only the countries that have a population bigger than said number will show up in the charts.
 
 # Getting Started with Create React App
