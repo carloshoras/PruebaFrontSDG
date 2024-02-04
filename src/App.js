@@ -1,8 +1,7 @@
 import './App.css';
 import {filterDataCharts, dataCharts, fetchDataCountries, continentsList, continentsListURL} from './fetch.js'
-import { Link, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import {Routes, Route} from 'react-router-dom';
+import {Routes, Route, Link, useParams} from 'react-router-dom';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -11,8 +10,8 @@ export default function App() {
     <div>
       <Header />
       <Routes>
-      <Route path="/:continent" element={<Main />} />
-      <Route path="/" element={<Main />} />
+        <Route path="/:continent" element={<Main />} />
+        <Route path="/" element={<Main />} />
       </Routes>
     </div>
   );
@@ -46,6 +45,8 @@ function Main() {
     setButtonClick(!buttonClick)
   }
   
+  //Collects the data for the initial display (without any filter)
+  //Executes first time and every time "continent" changes
   useEffect(function prueba() {
     async function loadData() {
       setInputValue(0)
@@ -55,6 +56,8 @@ function Main() {
     loadData()
   },[continent])
   
+  //Updates the actual data being shown in the chart (filter applied)
+  //Updates when the user clicks the "Apply button" or there's new raw data (selected continent changed)
   useEffect(function prueba() {
       setChartData(filterDataCharts(unfilteredChartData, inputValue))
   },[buttonClick,unfilteredChartData])
